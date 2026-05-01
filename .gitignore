@@ -1,0 +1,6 @@
+.agent-worktree-doctor/
+agent-worktree-doctor-report.md
+agent-worktree-doctor-report.json
+__pycache__/
+*.pyc
+
