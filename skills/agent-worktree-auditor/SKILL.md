@@ -1,11 +1,11 @@
----
-name: agent-worktree-doctor
+﻿---
+name: agent-worktree-auditor
 description: Use this skill before, during, or after AI coding sessions to inspect Git worktree risk, distinguish pre-existing changes from new agent changes when a baseline snapshot exists, find context bloat, and generate bilingual Markdown/JSON reports for Codex, Claude Code, Cursor, or other AI coding workflows.
 metadata:
   short-description: Diagnose AI coding worktree and context risk
 ---
 
-# Agent Worktree Doctor
+# Agent Worktree Auditor
 
 Use this skill when the user wants to make AI coding safer, review what an AI agent changed, create a pre-agent baseline, inspect context-window bloat, or produce an audit report for Codex/Claude Code/Cursor/Copilot-style workflows.
 
@@ -14,13 +14,13 @@ Use this skill when the user wants to make AI coding safer, review what an AI ag
 1. Before an AI coding run, create a baseline snapshot:
 
 ```bash
-python scripts/agent_worktree_doctor.py snapshot /path/to/repo
+python scripts/agent_worktree_auditor.py snapshot /path/to/repo
 ```
 
 2. After the AI coding run, generate a report:
 
 ```bash
-python scripts/agent_worktree_doctor.py report /path/to/repo --lang both
+python scripts/agent_worktree_auditor.py report /path/to/repo --lang both
 ```
 
 3. If the user did not take a snapshot, still run `report`; it will analyze the current Git state and context hygiene, but it cannot reliably label changes as pre-existing vs agent-made.
@@ -36,9 +36,9 @@ python scripts/agent_worktree_doctor.py report /path/to/repo --lang both
 
 The script writes:
 
-- `agent-worktree-doctor-report.md`
-- `agent-worktree-doctor-report.json`
-- `.agent-worktree-doctor/baseline.json` when `snapshot` is used
+- `agent-worktree-auditor-report.md`
+- `agent-worktree-auditor-report.json`
+- `.agent-worktree-auditor/baseline.json` when `snapshot` is used
 
 Reports are bilingual by default when `--lang both` is used, and can be Chinese-only or English-only with `--lang zh` or `--lang en`.
 

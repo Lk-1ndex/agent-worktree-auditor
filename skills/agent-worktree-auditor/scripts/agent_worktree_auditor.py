@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Agent Worktree Doctor: local safety and context diagnostics for AI coding."""
+﻿#!/usr/bin/env python3
+"""Agent Worktree Auditor: local safety and context diagnostics for AI coding."""
 
 from __future__ import annotations
 
@@ -17,10 +17,10 @@ from pathlib import Path
 from typing import Any
 
 
-TOOL_DIR = ".agent-worktree-doctor"
+TOOL_DIR = ".agent-worktree-auditor"
 BASELINE_NAME = "baseline.json"
-REPORT_MD = "agent-worktree-doctor-report.md"
-REPORT_JSON = "agent-worktree-doctor-report.json"
+REPORT_MD = "agent-worktree-auditor-report.md"
+REPORT_JSON = "agent-worktree-auditor-report.json"
 
 EXCLUDED_DIRS = {
     TOOL_DIR,
@@ -215,7 +215,7 @@ def snapshot(repo: Path, output: Path | None = None) -> Path:
             "sha256": sha256_file(abs_path) if abs_path.exists() and abs_path.is_file() else None,
         }
     payload = {
-        "tool": "agent-worktree-doctor",
+        "tool": "agent-worktree-auditor",
         "version": 1,
         "created_at": now_iso(),
         "platform": platform.platform(),
@@ -343,7 +343,7 @@ def build_report(repo: Path, baseline_path: Path | None, max_file_kb: int) -> di
     files = git_status(root) if git_available else []
     baseline = load_baseline(root, baseline_path)
     return {
-        "tool": "agent-worktree-doctor",
+        "tool": "agent-worktree-auditor",
         "created_at": now_iso(),
         "platform": platform.platform(),
         "root": str(root),
@@ -386,7 +386,7 @@ def render_zh(data: dict[str, Any]) -> str:
     level_map = {"low": "低", "medium": "中", "high": "高"}
     level = level_map[risk_level(data)]
     out = []
-    out.append(line("# Agent Worktree Doctor 报告"))
+    out.append(line("# Agent Worktree Auditor 报告"))
     out.append(line())
     out.append(line(f"- 生成时间：`{data['created_at']}`"))
     out.append(line(f"- 根目录：`{data['root']}`"))
@@ -450,7 +450,7 @@ def render_zh(data: dict[str, Any]) -> str:
 def render_en(data: dict[str, Any]) -> str:
     level = risk_level(data)
     out = []
-    out.append(line("# Agent Worktree Doctor Report"))
+    out.append(line("# Agent Worktree Auditor Report"))
     out.append(line())
     out.append(line(f"- Generated at: `{data['created_at']}`"))
     out.append(line(f"- Root: `{data['root']}`"))
@@ -536,7 +536,7 @@ def command_report(args: argparse.Namespace) -> int:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="agent_worktree_doctor",
+        prog="agent_worktree_auditor",
         description="Audit AI coding worktree changes and context bloat.",
     )
     sub = parser.add_subparsers(dest="command", required=True)
@@ -548,7 +548,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     report = sub.add_parser("report", help="Generate Markdown and JSON diagnostics.")
     report.add_argument("path", nargs="?", default=".", help="Repository or project path.")
-    report.add_argument("--baseline", help="Baseline JSON path. Defaults to .agent-worktree-doctor/baseline.json.")
+    report.add_argument("--baseline", help="Baseline JSON path. Defaults to .agent-worktree-auditor/baseline.json.")
     report.add_argument("--output", help="Markdown report path.")
     report.add_argument("--json-output", help="JSON report path.")
     report.add_argument("--lang", choices=["zh", "en", "both"], default="both", help="Report language.")
